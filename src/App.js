@@ -1,7 +1,9 @@
 import React from 'react'
-import { DataQuery } from '@dhis2/app-runtime'
-import i18n from '@dhis2/d2-i18n'
-import classes from './App.module.css'
+import {BrowserRouter as Router, Route, withRouter} from 'react-router-dom';
+import LandingPage from "./home";
+import UsersPage from "./resources/Users";
+import TrackedEntityInstancesPage from "./resources/TrackedEntityInstances";
+import ProgramsPage from "./resources/Programs";
 
 const query = {
     me: {
@@ -9,23 +11,19 @@ const query = {
     },
 }
 
+const routes = [
+    'users',
+    'trackedEntityInstances',
+    'programs'
+]
+
 const MyApp = () => (
-    <div className={classes.container}>
-        <DataQuery query={query}>
-            {({ error, loading, data }) => {
-                if (error) return <span>ERROR</span>
-                if (loading) return <span>...</span>
-                return (
-                    <>
-                        <h1>
-                            {i18n.t('Hello {{name}}', { name: data.me.name })}
-                        </h1>
-                        <h3>{i18n.t('Welcome to DHIS2!')}</h3>
-                    </>
-                )
-            }}
-        </DataQuery>
-    </div>
+   <Router>
+       <Route path='/' component={withRouter(LandingPage)}  />
+       <Route path='/users' component={withRouter(UsersPage)}  />
+       <Route path='/trackedEntityInstances' component={withRouter(TrackedEntityInstancesPage)}  />
+       <Route path='/programs' component={withRouter(ProgramsPage)}  />
+   </Router>
 )
 
 export default MyApp
